@@ -1,404 +1,565 @@
-// Language Change Function
-function changeLanguage(language, action) {
-    // Update text content
-    if (language === 'en') {
-        document.getElementById('aperitiviText').innerText = 'Aperitifs and Liqueurs';
-        document.getElementById('vinaText').innerText = 'Wines';
-        document.getElementById('pivaText').innerText = 'Beers';
-        document.getElementById('toplinapiciText').innerText = 'Hot Drinks';
-        document.getElementById('sokoviText').innerText = 'Juices';
-        document.getElementById('vodaText').innerText = 'Energy Drinks and Water';
-        document.getElementById('viskiText').innerText = 'Whiskey';
-        document.getElementById('kokteliText').innerText = 'Cocktails';
-        document.getElementById('grickaliceText').innerText = 'Snacks';
-        document.getElementById('digmeni').innerText = 'Digital Menu';
-        document.getElementById('napomena').innerHTML = '<strong>Note:</strong> <em>Prices are in Serbian Dinars (RSD).</em>';
-        document.querySelector('.copyright').innerHTML = '&copy; 2024 Cafe Kulturica - Your favorite spot.';
-        document.title = 'Cafe Kulturica - Digital Menu';
-    } else if (language === 'sr') {
-        document.getElementById('aperitiviText').innerText = 'Aperitivi i likeri';
-        document.getElementById('vinaText').innerText = 'Vina';
-        document.getElementById('pivaText').innerText = 'Piva';
-        document.getElementById('toplinapiciText').innerText = 'Topli Napici';
-        document.getElementById('sokoviText').innerText = 'Sokovi';
-        document.getElementById('vodaText').innerText = 'Energetski napici i Voda';
-        document.getElementById('viskiText').innerText = 'Viski';
-        document.getElementById('kokteliText').innerText = 'Kokteli';
-        document.getElementById('grickaliceText').innerText = 'Grickalice';
-        document.getElementById('digmeni').innerText = 'Digitalni Meni';
-        document.getElementById('napomena').innerHTML = '<strong>Napomena:</strong> <em>Cene su izražene u dinarima (RSD).</em>';
-        document.querySelector('.copyright').innerHTML = '&copy; 2024 Kafe Kulturica - Vaša omiljena lokacija.';
-        document.title = 'Kafe Kulturica - Digitalni Meni';
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #8B4513;
+    --secondary-color: #D2691E;
+    --accent-color: #CD853F;
+    --light-bg: #FFF8F0;
+    --card-bg: #FFFFFF;
+    --text-dark: #2C1810;
+    --text-light: #6B4423;
+    --border-color: #E8D5C4;
+    --shadow-sm: 0 2px 8px rgba(139, 69, 19, 0.08);
+    --shadow-md: 0 4px 16px rgba(139, 69, 19, 0.12);
+    --shadow-lg: 0 8px 24px rgba(139, 69, 19, 0.16);
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #FFF8F0 0%, #FFE8D6 100%);
+    min-height: 100vh;
+    padding: 20px 10px;
+    color: var(--text-dark);
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.menu-wrapper {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
     }
-
-    // Update active button state
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.classList.remove('active');
-        if (btn.getAttribute('data-lang') === language) {
-            btn.classList.add('active');
-        }
-    });
-
-    localStorage.setItem('selectedLanguage', language);
-    if (action === 'promeni') {
-        location.reload();
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
-// Load saved language on page load
-document.addEventListener('DOMContentLoaded', function() {
-    const savedLanguage = localStorage.getItem('selectedLanguage');
-    if (savedLanguage) {
-        changeLanguage(savedLanguage, 'nista');
+.menu-container {
+    background: var(--card-bg);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border-color);
+}
+
+/* Top Bar */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 24px;
+    background: linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #8B4513 100%);
+    color: white;
+    font-size: 13px;
+    box-shadow: inset 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.wifi-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.wifi-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 400;
+    letter-spacing: 0.3px;
+}
+
+.wifi-item i {
+    width: 18px;
+    text-align: center;
+    opacity: 0.9;
+}
+
+.wifi-item.clickable {
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.wifi-item.clickable:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateX(3px);
+}
+
+.wifi-item.clickable:active {
+    transform: translateX(3px) scale(0.98);
+}
+
+.copy-icon {
+    font-size: 12px;
+    opacity: 0.8;
+    margin-left: 6px;
+    transition: opacity 0.3s ease;
+}
+
+.wifi-item.clickable:hover .copy-icon {
+    opacity: 1;
+    animation: pulse 1s ease-in-out infinite;
+}
+
+.language-selector {
+    display: flex;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 6px;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+}
+
+.lang-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    padding: 8px 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: white;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+}
+
+.lang-btn img {
+    width: 24px;
+    height: 24px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.lang-btn span {
+    font-family: 'Poppins', sans-serif;
+}
+
+.lang-btn:hover {
+    background: rgba(255, 255, 255, 0.35);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.lang-btn.active {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: white;
+    color: var(--primary-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Header */
+.menu-header {
+    padding: 40px 20px;
+    text-align: center;
+    background: linear-gradient(135deg, #FFF8F0 0%, #FFE8D6 50%, #FFFFFF 100%);
+    border-bottom: 3px solid var(--border-color);
+    position: relative;
+    overflow: hidden;
+}
+
+.menu-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(139, 69, 19, 0.03) 0%, transparent 70%);
+    animation: rotate 30s linear infinite;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    position: relative;
+    z-index: 1;
+}
+
+.logo-image {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    animation: float 3s ease-in-out infinite;
+    filter: drop-shadow(0 4px 8px rgba(139, 69, 19, 0.2));
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
     }
-});
-
-// Menu Data (without images)
-const menuData = {
-    "categories": [
-        {
-            "name": "Aperitivi i likeri",
-            "items": [
-                { "name": "Gorka tajna 0,05l", "price": "150 RSD" },
-                { "name": "Gorki list 0,05l", "price": "170 RSD" },
-                { "name": "Vinjak Rubin 0,05l", "price": "150 RSD" },
-                { "name": "Vinjak 5 0,05l", "price": "240 RSD" },
-                { "name": "Tekila 0,03l", "price": "230 RSD" },
-                { "name": "Gin Rubin 0,05l", "price": "160 RSD" },
-                { "name": "Gin Kraft 0,05l", "price": "230 RSD" },
-                { "name": "Votka 0,05l", "price": "150 RSD" },
-                { "name": "Vermut 0,1l", "price": "150 RSD" },
-                { "name": "Viljamovka Takovo 0,05", "price": "280 RSD" },
-                { "name": "Pelinkovac 0,05", "price": "170 RSD" },
-                { "name": "Rakija kajsija 0,05", "price": "180 RSD" },
-                { "name": "Rakija dunja 0,05", "price": "180 RSD" },
-                { "name": "Rakija jabuka 0,05", "price": "180 RSD" },
-                { "name": "Rakija šljiva 0,05", "price": "160 RSD" },
-                { "name": "Stock 84 0,05", "price": "220 RSD" },
-                { "name": "Jagermeister 0,05", "price": "290 RSD" }
-            ]
-        },
-        {
-            "name": "Aperitifs and Liqueurs",
-            "items": [
-                { "name": "Bitter Secret 0.05l", "price": "150 RSD" },
-                { "name": "Bitter Leaf 0.05l", "price": "170 RSD" },
-                { "name": "Brandy Rubin 0.05l", "price": "150 RSD" },
-                { "name": "Brandy 5 0.05l", "price": "240 RSD" },
-                { "name": "Tequila 0.03l", "price": "230 RSD" },
-                { "name": "Gin Rubin 0.05l", "price": "160 RSD" },
-                { "name": "Gin Kraft 0.05l", "price": "230 RSD" },
-                { "name": "Vodka 0.05l", "price": "150 RSD" },
-                { "name": "Vermouth 0.1l", "price": "150 RSD" },
-                { "name": "Williams Pear Brandy Takovo 0.05l", "price": "280 RSD" },
-                { "name": "Pelinkovac 0.05", "price": "170 RSD" },
-                { "name": "Apricot Brandy 0.05l", "price": "180 RSD" },
-                { "name": "Quince Brandy 0.05l", "price": "180 RSD" },
-                { "name": "Apple Brandy 0.05l", "price": "180 RSD" },
-                { "name": "Plum Brandy 0.05l", "price": "160 RSD" },
-                { "name": "Stock 84 0.05l", "price": "220 RSD" },
-                { "name": "Jagermeister 0.05l", "price": "290 RSD" }
-            ]
-        },
-        {
-            "name": "Vina",
-            "items": [
-                { "name": "Graševina 0,1l", "price": "110 RSD" },
-                { "name": "Vranac 0,1l", "price": "110 RSD" },
-                { "name": "Vina 0,187l", "price": "290 RSD" },
-                { "name": "Kuvano vino 0,2l", "price": "230 RSD" },
-                { "name": "Sangrija 0,2l", "price": "190 RSD" },
-                { "name": "Crno vino Praška 0,1l", "price": "140 RSD" },
-                { "name": "Belo vino Praška 0,1l", "price": "130 RSD" },
-                { "name": "Rose vino Praška 0,1l", "price": "140 RSD" }
-            ]
-        },
-        {
-            "name": "Wines",
-            "items": [
-                { "name": "Graševina 0.1l", "price": "110 RSD" },
-                { "name": "Vranac 0.1l", "price": "110 RSD" },
-                { "name": "Wine 0.187l", "price": "290 RSD" },
-                { "name": "Mulled Wine 0.2l", "price": "230 RSD" },
-                { "name": "Sangria 0.2l", "price": "190 RSD" },
-                { "name": "Red Wine Praška 0.1l", "price": "140 RSD" },
-                { "name": "White Wine Praška 0.1l", "price": "130 RSD" },
-                { "name": "Rosé Wine Praška 0.1l", "price": "140 RSD" }
-            ]
-        },
-        {
-            "name": "Piva",
-            "items": [
-                { "name": "Zaječarsko 0,33l", "price": "190 RSD" },
-                { "name": "Zaječarsko crno 0,33l", "price": "230 RSD" },
-                { "name": "Zaječarsko 0,5l", "price": "170 RSD" },
-                { "name": "Birra Moretti 0,4l", "price": "200 RSD" },
-                { "name": "Amstel 0,4l", "price": "200 RSD" },
-                { "name": "Laško 0,33l", "price": "230 RSD" },
-                { "name": "Heinikne 0,25l", "price": "310 RSD" },
-                { "name": "Zaječarsko točeno 0,33l", "price": "180 RSD" },
-                { "name": "Zaječarsko točeno 0,5l", "price": "210 RSD" },
-                { "name": "Birra Moretti točeno 0,33l", "price": "200 RSD" },
-                { "name": "Birra Moretti točeno 0,5l", "price": "230 RSD" }
-            ]
-        },
-        {
-            "name": "Beers",
-            "items": [
-                { "name": "Zaječarsko 0.33l", "price": "190 RSD" },
-                { "name": "Zaječarsko Dark Beer 0.33l", "price": "230 RSD" },
-                { "name": "Zaječarsko 0.5l", "price": "170 RSD" },
-                { "name": "Birra Moretti 0.4l", "price": "200 RSD" },
-                { "name": "Amstel 0.4l", "price": "200 RSD" },
-                { "name": "Laško 0.33l", "price": "230 RSD" },
-                { "name": "Heineken 0.25l", "price": "310 RSD" },
-                { "name": "Zaječarsko Draught 0.33l", "price": "180 RSD" },
-                { "name": "Zaječarsko Draught 0.5l", "price": "210 RSD" },
-                { "name": "Birra Moretti Draught 0.33l", "price": "200 RSD" },
-                { "name": "Birra Moretti Draught 0.5l", "price": "230 RSD" }
-            ]
-        },
-        {
-            "name": "Topli Napici",
-            "items": [
-                { "name": "Espresso kafa", "price": "140 RSD" },
-                { "name": "Espresso kafa sa šlagom", "price": "170 RSD" },
-                { "name": "Cappucino", "price": "160 RSD" },
-                { "name": "Domaća kafa", "price": "100 RSD" },
-                { "name": "Topla čokolada", "price": "170 RSD" },
-                { "name": "Topla čokolada sa šlagom", "price": "200 RSD" },
-                { "name": "Čaj fructus", "price": "140 RSD" },
-                { "name": "Šlag", "price": "30 RSD" },
-                { "name": "Mleko", "price": "60 RSD" },
-                { "name": "Plazma shake", "price": "290 RSD" }
-            ]
-        },
-        {
-            "name": "Hot Drinks",
-            "items": [
-                { "name": "Espresso Coffee", "price": "140 RSD" },
-                { "name": "Espresso Coffee with Whipped Cream", "price": "170 RSD" },
-                { "name": "Cappuccino", "price": "160 RSD" },
-                { "name": "Homemade Coffee", "price": "100 RSD" },
-                { "name": "Hot Chocolate", "price": "170 RSD" },
-                { "name": "Hot Chocolate with Whipped Cream", "price": "200 RSD" },
-                { "name": "Fructus Tea", "price": "140 RSD" },
-                { "name": "Whipped Cream", "price": "30 RSD" },
-                { "name": "Milk", "price": "60 RSD" },
-                { "name": "Plazma Shake", "price": "290 RSD" }
-            ]
-        },
-        {
-            "name": "Sokovi",
-            "items": [
-                { "name": "Coca Cola 0,25l", "price": "170 RSD" },
-                { "name": "Coca Cola 0,1l", "price": "90 RSD" },
-                { "name": "Coca Cola zero 0,33l", "price": "180 RSD" },
-                { "name": "Cocta 0,25l", "price": "170 RSD" },
-                { "name": "Fanta 0,25l", "price": "170 RSD" },
-                { "name": "Sprite 0,25l", "price": "170 RSD" },
-                { "name": "Schweppers 0,25l", "price": "170 RSD" },
-                { "name": "Pomorandža 0,25l", "price": "170 RSD" },
-                { "name": "Borovnica 0,25l", "price": "170 RSD" },
-                { "name": "Breskva 0,25l", "price": "170 RSD" },
-                { "name": "Jabuka 0,25l", "price": "170 RSD" },
-                { "name": "Jagoda 0,25l", "price": "170 RSD" },
-                { "name": "Grožđe 0,25l", "price": "170 RSD" },
-                { "name": "Multi vitamin 0,25l", "price": "170 RSD" },
-                { "name": "Cedevita 0,2l", "price": "160 RSD" },
-                { "name": "Multi sola 0,5l", "price": "190 RSD" },
-                { "name": "Ice tea 0,5l", "price": "190 RSD" },
-                { "name": "Ceđena pomorandža 0,33l", "price": "260 RSD" },
-                { "name": "Limunada 0,33l", "price": "170 RSD" },
-                { "name": "Ceđeni MIX", "price": "270 RSD" }
-            ]
-        },
-        {
-            "name": "Juices",
-            "items": [
-                { "name": "Coca Cola 0.25l", "price": "170 RSD" },
-                { "name": "Coca Cola 0.1l", "price": "90 RSD" },
-                { "name": "Coca Cola Zero 0.33l", "price": "180 RSD" },
-                { "name": "Cocta 0.25l", "price": "170 RSD" },
-                { "name": "Fanta 0.25l", "price": "170 RSD" },
-                { "name": "Sprite 0.25l", "price": "170 RSD" },
-                { "name": "Schweppes 0.25l", "price": "170 RSD" },
-                { "name": "Orange Juice 0.25l", "price": "170 RSD" },
-                { "name": "Blueberry Juice 0.25l", "price": "170 RSD" },
-                { "name": "Peach Juice 0.25l", "price": "170 RSD" },
-                { "name": "Apple Juice 0.25l", "price": "170 RSD" },
-                { "name": "Strawberry Juice 0.25l", "price": "170 RSD" },
-                { "name": "Grape Juice 0.25l", "price": "170 RSD" },
-                { "name": "Multi Vitamin Juice 0.25l", "price": "170 RSD" },
-                { "name": "Cedevita 0.2l", "price": "160 RSD" },
-                { "name": "Multi Sola 0.5l", "price": "190 RSD" },
-                { "name": "Ice Tea 0.5l", "price": "190 RSD" },
-                { "name": "Fresh Orange Juice 0.33l", "price": "260 RSD" },
-                { "name": "Lemonade 0.33l", "price": "170 RSD" },
-                { "name": "Fresh Mix Juice", "price": "270 RSD" }
-            ]
-        },
-        {
-            "name": "Energetski napici i Voda",
-            "items": [
-                { "name": "Rosa voda 0,33l", "price": "130 RSD" },
-                { "name": "Rosa voda gazirana 0,33l", "price": "140 RSD" },
-                { "name": "Rosa voda gazirana 0,75l", "price": "210 RSD" },
-                { "name": "Knjaz Miloš gazirana 0,25l", "price": "140 RSD" },
-                { "name": "Knjaz Miloš gazirana 0,75l", "price": "210 RSD" },
-                { "name": "Knjaz Miloš limun 0,33l", "price": "150 RSD" },
-                { "name": "Red Bull 0,25l", "price": "290 RSD" },
-                { "name": "Guarana 0,25l", "price": "190 RSD" }
-            ]
-        },
-        {
-            "name": "Energy Drinks and Water",
-            "items": [
-                { "name": "Rosa Water 0.33l", "price": "130 RSD" },
-                { "name": "Rosa Sparkling Water 0.33l", "price": "140 RSD" },
-                { "name": "Rosa Sparkling Water 0.75l", "price": "210 RSD" },
-                { "name": "Knjaz Miloš Sparkling Water 0.25l", "price": "140 RSD" },
-                { "name": "Knjaz Miloš Sparkling Water 0.75l", "price": "210 RSD" },
-                { "name": "Knjaz Miloš Lemon 0.33l", "price": "150 RSD" },
-                { "name": "Red Bull 0.25l", "price": "290 RSD" },
-                { "name": "Guarana 0.25l", "price": "190 RSD" }
-            ]
-        },
-        {
-            "name": "Viski",
-            "items": [
-                { "name": "Jack Deniels 0,05l", "price": "360 RSD" },
-                { "name": "Jameson 0,05l", "price": "330 RSD" }
-            ]
-        },
-        {
-            "name": "Whiskey",
-            "items": [
-                { "name": "Jack Daniels 0.05l", "price": "360 RSD" },
-                { "name": "Jameson 0.05l", "price": "330 RSD" }
-            ]
-        },
-        {
-            "name": "Kokteli",
-            "items": [
-                { "name": "Cuba libre", "price": "300 RSD" },
-                { "name": "Mojito", "price": "350 RSD" },
-                { "name": "Gin Tonik", "price": "320 RSD" }
-            ]
-        },
-        {
-            "name": "Cocktails",
-            "items": [
-                { "name": "Cuba Libre", "price": "300 RSD" },
-                { "name": "Mojito", "price": "350 RSD" },
-                { "name": "Gin Tonic", "price": "320 RSD" }
-            ]
-        },
-        {
-            "name": "Grickalice",
-            "items": [
-                { "name": "Čips 150g", "price": "240 RSD" },
-                { "name": "Kikiriki 100g", "price": "190 RSD" }
-            ]
-        },
-        {
-            "name": "Snacks",
-            "items": [
-                { "name": "Chips 150g", "price": "240 RSD" },
-                { "name": "Peanuts 100g", "price": "190 RSD" }
-            ]
-        }
-    ]
-};
-
-// Toggle Submenu Function
-function toggleSubMenu(menuItem) {
-    const submenu = menuItem.querySelector('.submenu');
-    const isActive = menuItem.classList.contains('active');
-
-    // Close all other active menus
-    document.querySelectorAll('.menu-item.active').forEach(item => {
-        if (item !== menuItem) {
-            item.classList.remove('active');
-            item.querySelector('.submenu').style.maxHeight = '0';
-        }
-    });
-
-    // Toggle current menu
-    menuItem.classList.toggle('active');
-
-    if (!isActive) {
-        const categoryName = menuItem.querySelector('h2').textContent.trim();
-        const category = menuData.categories.find(cat => cat.name === categoryName);
-
-        if (category) {
-            generateSubMenu(category, submenu);
-            // Set max-height after content is generated
-            setTimeout(() => {
-                submenu.style.maxHeight = submenu.scrollHeight + 'px';
-            }, 10);
-        }
-    } else {
-        submenu.style.maxHeight = '0';
+    50% {
+        transform: translateY(-10px);
     }
 }
 
-// Generate Submenu Function
-function generateSubMenu(category, submenuContainer) {
-    submenuContainer.innerHTML = '';
-
-    category.items.forEach((item, index) => {
-        const menuItemDetail = document.createElement('div');
-        menuItemDetail.classList.add('menu-item-detail');
-        
-        // Add stagger animation
-        menuItemDetail.style.animation = `fadeInUp 0.3s ease-out ${index * 0.03}s both`;
-
-        const itemInfo = document.createElement('div');
-        itemInfo.classList.add('menu-item-info');
-
-        const itemName = document.createElement('p');
-        itemName.classList.add('item');
-        itemName.textContent = item.name;
-
-        itemInfo.appendChild(itemName);
-
-        const itemPrice = document.createElement('p');
-        itemPrice.classList.add('item-price');
-        itemPrice.textContent = item.price;
-
-        menuItemDetail.appendChild(itemInfo);
-        menuItemDetail.appendChild(itemPrice);
-
-        submenuContainer.appendChild(menuItemDetail);
-    });
+.logo-text h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 4px;
+    letter-spacing: 1px;
 }
 
-// Copy WiFi Key Function
-function copyWifiKey() {
-    const wifiKey = document.getElementById('wifiKey').textContent;
+.logo-text p {
+    font-size: 14px;
+    color: var(--text-light);
+    font-weight: 300;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
 
-    navigator.clipboard.writeText(wifiKey).then(() => {
-        toastr.success('Uspešno kopirano!', '', {
-            positionClass: 'toast-top-center',
-            timeOut: 2000,
-            closeButton: false,
-            progressBar: true
-        });
-    }).catch(() => {
-        // Fallback method
-        const textArea = document.createElement("textarea");
-        textArea.value = wifiKey;
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textArea);
+/* Categories */
+.categories-container {
+    padding: 8px;
+}
 
-        toastr.success('Uspešno kopirano!', '', {
-            positionClass: 'toast-top-center',
-            timeOut: 2000,
-            closeButton: false,
-            progressBar: true
-        });
-    });
+.menu-item {
+    margin: 8px 0;
+    border-radius: 16px;
+    background: linear-gradient(135deg, var(--light-bg) 0%, #FFF 100%);
+    border: 2px solid var(--border-color);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+.menu-item:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 4px 12px rgba(139, 69, 19, 0.08);
+}
+
+.menu-item.active {
+    background: linear-gradient(135deg, white 0%, #FFF8F0 100%);
+    border-color: var(--secondary-color);
+    box-shadow: 0 6px 20px rgba(139, 69, 19, 0.12);
+}
+
+.category-header {
+    display: flex;
+    align-items: center;
+    padding: 20px 22px;
+    gap: 16px;
+    position: relative;
+    z-index: 1;
+}
+
+.category-icon {
+    font-size: 32px;
+    min-width: 45px;
+    text-align: center;
+    filter: drop-shadow(0 2px 4px rgba(139, 69, 19, 0.15));
+    transition: transform 0.3s ease;
+}
+
+.menu-item:hover .category-icon {
+    transform: scale(1.05);
+}
+
+.menu-item.active .category-icon {
+    transform: scale(1.1);
+}
+
+.category-header h2 {
+    flex: 1;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-dark);
+    font-family: 'Playfair Display', serif;
+}
+
+.arrow-icon {
+    font-size: 14px;
+    color: var(--text-light);
+    transition: transform 0.3s ease;
+}
+
+.menu-item.active .arrow-icon {
+    transform: rotate(180deg);
+}
+
+/* Submenu */
+.submenu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 0 12px;
+}
+
+.menu-item.active .submenu {
+    max-height: 2000px;
+    padding: 0 12px 16px;
+}
+
+.menu-item-detail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 18px;
+    margin: 8px 0;
+    background: white;
+    border-radius: 14px;
+    border-left: 4px solid var(--accent-color);
+    box-shadow: 0 2px 6px rgba(139, 69, 19, 0.06);
+    transition: all 0.25s ease;
+}
+
+.menu-item-detail:hover {
+    box-shadow: 0 4px 12px rgba(139, 69, 19, 0.1);
+    border-left-color: var(--secondary-color);
+    background: #FFFBF7;
+}
+
+.menu-item-info {
+    flex: 1;
+}
+
+.item {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-dark);
+    margin-bottom: 4px;
+    line-height: 1.4;
+    transition: color 0.3s ease;
+}
+
+.menu-item-detail:hover .item {
+    color: var(--primary-color);
+}
+
+.item-price {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--secondary-color);
+    font-family: 'Playfair Display', serif;
+    white-space: nowrap;
+    margin-left: 16px;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.menu-item-detail:hover .item-price {
+    color: var(--primary-color);
+    transform: scale(1.05);
+}
+
+/* Footer */
+.menu-footer {
+    padding: 28px 24px;
+    background: linear-gradient(180deg, #FFFFFF 0%, #FFF8F0 50%, #FFE8D6 100%);
+    border-top: 3px solid var(--border-color);
+    text-align: center;
+    position: relative;
+}
+
+.menu-footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+}
+
+.note {
+    font-size: 14px;
+    color: var(--text-light);
+    margin-bottom: 18px;
+    line-height: 1.8;
+    padding: 12px 20px;
+    background: rgba(139, 69, 19, 0.05);
+    border-radius: 10px;
+    border: 1px dashed var(--border-color);
+}
+
+.note strong {
+    color: var(--text-dark);
+    font-weight: 600;
+}
+
+.copyright {
+    font-size: 13px;
+    color: var(--text-light);
+    font-weight: 400;
+    opacity: 0.9;
+}
+
+/* Toastr Customization */
+.toast-success {
+    background-color: var(--primary-color) !important;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    body {
+        padding: 10px 5px;
+    }
+    
+    .menu-container {
+        border-radius: 20px;
+    }
+    
+    /* Top Bar Mobile */
+    .top-bar {
+        flex-direction: column;
+        gap: 12px;
+        padding: 14px 16px;
+        align-items: stretch;
+    }
+    
+    .wifi-section {
+        order: 2;
+    }
+    
+    .language-selector {
+        order: 1;
+        justify-content: center;
+        width: 100%;
+    }
+    
+    .lang-btn {
+        flex: 1;
+        justify-content: center;
+        padding: 10px 16px;
+    }
+    
+    .wifi-item {
+        font-size: 12px;
+        justify-content: center;
+    }
+    
+    .wifi-item.clickable {
+        padding: 8px 12px;
+    }
+    
+    /* Logo Mobile */
+    .logo-image {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .logo-text h1 {
+        font-size: 24px;
+    }
+    
+    .logo-text p {
+        font-size: 11px;
+    }
+    
+    /* Categories Mobile */
+    .category-header {
+        padding: 16px 18px;
+    }
+    
+    .category-header h2 {
+        font-size: 16px;
+    }
+    
+    .category-icon {
+        font-size: 26px;
+        min-width: 38px;
+    }
+    
+    /* Items Mobile */
+    .item {
+        font-size: 14px;
+    }
+    
+    .item-price {
+        font-size: 16px;
+    }
+    
+    .menu-item-detail {
+        padding: 12px 14px;
+    }
+    
+    /* Footer Mobile */
+    .note {
+        font-size: 12px;
+        padding: 10px 14px;
+    }
+    
+    .copyright {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 380px) {
+    .lang-btn {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+    
+    .lang-btn img {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .wifi-item {
+        font-size: 11px;
+    }
+    
+    .logo-text h1 {
+        font-size: 22px;
+    }
+}
+
+/* Smooth Scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Loading Animation */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.loading {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Selection */
+::selection {
+    background: var(--accent-color);
+    color: white;
+}
+
+::-moz-selection {
+    background: var(--accent-color);
+    color: white;
 }
