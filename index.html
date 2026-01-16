@@ -1,21 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <link rel="stylesheet" href="styles.css">
     <title>Kafe Kulturica - Digital Menu</title>
 </head>
+
 <body>
     <div class="container">
         <div class="menu-wrapper">
             <div class="menu-container" id="menuContainer">
-                
+
                 <!-- WiFi & Language Section -->
                 <div class="top-bar">
                     <div class="wifi-section">
@@ -29,37 +33,48 @@
                             <i class="fas fa-copy copy-icon"></i>
                         </div>
                     </div>
-                    
+
                     <div class="language-selector">
-                        <button class="lang-btn active" onclick="changeLanguage('sr','promeni')" data-lang="sr" title="Srpski">
+                        <button class="lang-btn active" onclick="changeLanguage('sr','promeni')" data-lang="sr"
+                            title="Srpski">
                             <img src="images/sr.png" alt="Srpski">
                             <span>SR</span>
                         </button>
-                        <button class="lang-btn" onclick="changeLanguage('en','promeni')" data-lang="en" title="English">
+                        <button class="lang-btn" onclick="changeLanguage('en','promeni')" data-lang="en"
+                            title="English">
                             <img src="images/en.png" alt="English">
                             <span>EN</span>
                         </button>
                     </div>
                 </div>
-                
+
                 <!-- Header -->
                 <header class="menu-header">
                     <div class="logo-section">
                         <img src="images/logo1.png" alt="Kulturica Logo" class="logo-image">
                         <div class="logo-text">
-                            <h1>Kafe Kulturica</h1>
+                            <h1>Kulturica</h1>
                             <p id="digmeni">Digitalni Meni</p>
                         </div>
                     </div>
                 </header>
-                
+
                 <!-- Menu Categories -->
                 <div class="categories-container">
-                    
+
                     <div class="menu-item" onclick="toggleSubMenu(this)">
                         <div class="category-header">
                             <div class="category-icon">🍸</div>
-                            <h2 id="aperitiviText">Aperitivi i likeri</h2>
+                            <h2 id="aperitiviText">Žestoka pića</h2>
+                            <i class="fas fa-chevron-down arrow-icon"></i>
+                        </div>
+                        <div class="submenu"></div>
+                    </div>
+
+                    <div class="menu-item" onclick="toggleSubMenu(this)">
+                        <div class="category-header">
+                            <div class="category-icon">🥃</div>
+                            <h2 id="rakijeText">Rakije</h2>
                             <i class="fas fa-chevron-down arrow-icon"></i>
                         </div>
                         <div class="submenu"></div>
@@ -85,6 +100,15 @@
 
                     <div class="menu-item" onclick="toggleSubMenu(this)">
                         <div class="category-header">
+                            <div class="category-icon">🍻</div>
+                            <h2 id="tocenopivoText">Točeno pivo</h2>
+                            <i class="fas fa-chevron-down arrow-icon"></i>
+                        </div>
+                        <div class="submenu"></div>
+                    </div>
+
+                    <div class="menu-item" onclick="toggleSubMenu(this)">
+                        <div class="category-header">
                             <div class="category-icon">☕</div>
                             <h2 id="toplinapiciText">Topli Napici</h2>
                             <i class="fas fa-chevron-down arrow-icon"></i>
@@ -103,8 +127,17 @@
 
                     <div class="menu-item" onclick="toggleSubMenu(this)">
                         <div class="category-header">
+                            <div class="category-icon">🍊</div>
+                            <h2 id="cedjenisokoviText">Ceđeni sokovi</h2>
+                            <i class="fas fa-chevron-down arrow-icon"></i>
+                        </div>
+                        <div class="submenu"></div>
+                    </div>
+
+                    <div class="menu-item" onclick="toggleSubMenu(this)">
+                        <div class="category-header">
                             <div class="category-icon">💧</div>
-                            <h2 id="vodaText">Energetski napici i Voda</h2>
+                            <h2 id="vodaText">Voda</h2>
                             <i class="fas fa-chevron-down arrow-icon"></i>
                         </div>
                         <div class="submenu"></div>
@@ -138,7 +171,7 @@
                     </div>
 
                 </div>
-                
+
                 <!-- Footer -->
                 <footer class="menu-footer">
                     <p id="napomena" class="note">
