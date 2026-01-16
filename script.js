@@ -52,7 +52,7 @@ function changeLanguage(language, action) {
 }
 
 // Load saved language on page load
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
     const savedLanguage = localStorage.getItem('selectedLanguage');
     if (savedLanguage) {
         changeLanguage(savedLanguage, 'nista');
@@ -407,15 +407,18 @@ function toggleSubMenu(menuItem) {
             setTimeout(() => {
                 submenu.style.maxHeight = submenu.scrollHeight + 'px';
             }, 10);
-
-            // Scroll to the menu item smoothly after opening
+            
+            // Scroll to the menu item header with offset
             setTimeout(() => {
-                menuItem.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start',
-                    inline: 'nearest'
+                const yOffset = -20; // Offset od vrha (20px ispod gornje ivice)
+                const elementPosition = menuItem.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset + yOffset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
                 });
-            }, 100);
+            }, 150);
         }
     } else {
         submenu.style.maxHeight = '0';
@@ -429,7 +432,7 @@ function generateSubMenu(category, submenuContainer) {
     category.items.forEach((item, index) => {
         const menuItemDetail = document.createElement('div');
         menuItemDetail.classList.add('menu-item-detail');
-
+        
         // Add stagger animation
         menuItemDetail.style.animation = `fadeInUp 0.3s ease-out ${index * 0.03}s both`;
 
@@ -480,4 +483,4 @@ function copyWifiKey() {
             progressBar: true
         });
     });
-} s
+}
