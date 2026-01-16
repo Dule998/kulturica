@@ -386,42 +386,54 @@ function toggleSubMenu(menuItem) {
     const submenu = menuItem.querySelector('.submenu');
     const isActive = menuItem.classList.contains('active');
 
-    // Close all other active menus
-    document.querySelectorAll('.menu-item.active').forEach(item => {
-        if (item !== menuItem) {
+    // If clicking on already active menu, just close it
+    if (isActive) {
+        menuItem.classList.remove('active');
+        submenu.style.maxHeight = '0';
+        return;
+    }
+
+    // Find and close all other active menus first
+    const activeMenus = document.querySelectorAll('.menu-item.active');
+    
+    // If there are active menus, close them first
+    if (activeMenus.length > 0) {
+        activeMenus.forEach(item => {
             item.classList.remove('active');
             item.querySelector('.submenu').style.maxHeight = '0';
-        }
-    });
-
-    // Toggle current menu
-    menuItem.classList.toggle('active');
-
-    if (!isActive) {
-        const categoryName = menuItem.querySelector('h2').textContent.trim();
-        const category = menuData.categories.find(cat => cat.name === categoryName);
-
-        if (category) {
-            generateSubMenu(category, submenu);
-            // Set max-height after content is generated
-            setTimeout(() => {
-                submenu.style.maxHeight = submenu.scrollHeight + 'px';
-            }, 10);
-            
-            // Scroll to the menu item header with offset
-            setTimeout(() => {
-                const yOffset = -20; // Offset od vrha (20px ispod gornje ivice)
-                const elementPosition = menuItem.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset + yOffset;
-
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
-                });
-            }, 150);
-        }
+        });
+        
+        // Wait for closing animation to complete, then open new menu
+        setTimeout(() => {
+            openMenu(menuItem, submenu);
+        }, 300);
     } else {
-        submenu.style.maxHeight = '0';
+        // No active menus, open immediately
+        openMenu(menuItem, submenu);
+    }
+}
+
+// Helper function to open menu and scroll
+function openMenu(menuItem, submenu) {
+    const categoryName = menuItem.querySelector('h2').textContent.trim();
+    const category = menuData.categories.find(cat => cat.name === categoryName);
+
+    if (category) {
+        menuItem.classList.add('active');
+        generateSubMenu(category, submenu);
+        
+        // Set max-height after content is generated
+        setTimeout(() => {
+            submenu.style.maxHeight = submenu.scrollHeight + 'px';
+        }, 10);
+        
+        // Scroll to category header after opening animation starts
+        setTimeout(() => {
+            menuItem.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start'
+            });
+        }, 100);
     }
 }
 
